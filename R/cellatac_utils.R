@@ -144,7 +144,7 @@ compute_peakQC <- function(win_seu, cluster_col="seurat_clusters", EnsDb.genome 
 #'
 get_annotation_overlap <- function(gr, anno_gr, anno_name, minoverlap = 10){
   ## Clean annotation object
-  ucsc.levels <- str_replace(string=paste("chr",seqlevels(anno_gr),sep=""), pattern="chrMT", replacement="chrM")
+  ucsc.levels <- stringr::str_replace(string=paste("chr",seqlevels(anno_gr),sep=""), pattern="chrMT", replacement="chrM")
   seqlevels(anno_gr) <- ucsc.levels
   anno_gr <- keepStandardChromosomes(anno_gr, pruning.mode = 'coarse')
   ## Find overlaps
@@ -196,7 +196,7 @@ annotate_gr <- function(gr, EnsDb.genome = EnsDb.Hsapiens.v86, blacklist_gr = Si
     pull(annotation)
 
   ## Overlapping gene
-  ucsc.levels <- str_replace(string=paste("chr",seqlevels(genes_coords),sep=""), pattern="chrMT", replacement="chrM")
+  ucsc.levels <- stringr::str_replace(string=paste("chr",seqlevels(genes_coords),sep=""), pattern="chrMT", replacement="chrM")
   seqlevels(genes_coords) <- ucsc.levels
   genes_coords <- keepStandardChromosomes(genes_coords, pruning.mode = 'coarse')
   genespromoters_coords <- Extend(genes_coords, upstream = 2000)
@@ -208,7 +208,7 @@ annotate_gr <- function(gr, EnsDb.genome = EnsDb.Hsapiens.v86, blacklist_gr = Si
 
   ## Distance to nearest TSS
   transcript_coords <- ensembldb::transcripts(EnsDb.genome, filter = ~ gene_biotype == "protein_coding")
-  ucsc.levels <- str_replace(string=paste("chr",seqlevels(transcript_coords),sep=""), pattern="chrMT", replacement="chrM")
+  ucsc.levels <- stringr::str_replace(string=paste("chr",seqlevels(transcript_coords),sep=""), pattern="chrMT", replacement="chrM")
   seqlevels(transcript_coords) <- ucsc.levels
   transcript_coords <- keepStandardChromosomes(transcript_coords, pruning.mode = 'coarse')
   tss_coords <- resize(unlist(range(split(transcript_coords, ~ tx_id))), width=1)
